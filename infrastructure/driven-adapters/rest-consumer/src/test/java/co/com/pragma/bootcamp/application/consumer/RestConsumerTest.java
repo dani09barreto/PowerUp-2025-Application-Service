@@ -36,36 +36,33 @@ class RestConsumerTest {
         mockBackEnd.shutdown();
     }
 
-    /*
-
     @Test
-    @DisplayName("Validate the function testGet.")
-    void validateTestGet() {
+    @DisplayName("Validate the function findByNumberIdentification.")
+    void shouldReturnUserWhenResponseIsSuccessful() {
+        String numberIdentification = "12345";
+        String responseBody = """
+            {
+              "id": 1,
+              "firstName": "John",
+              "lastName": "Doe",
+              "birthDate": "2025-08-27",
+              "address": "Call3 1",
+              "phone": "322123",
+              "identificationNumber": "12345",
+              "email": "dan@gmail.com",
+              "baseSalary": 1000
+            }
+    """;
 
         mockBackEnd.enqueue(new MockResponse()
                 .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .setResponseCode(HttpStatus.OK.value())
-                .setBody("{\"state\" : \"ok\"}"));
-        var response = restConsumer.testGet();
+                .setBody(responseBody));
 
-        StepVerifier.create(response)
-                .expectNextMatches(objectResponse -> objectResponse.getState().equals("ok"))
+        StepVerifier.create(restConsumer.findByNumberIdentification(numberIdentification))
+                .expectNextMatches(user -> user.getFirstName().equals("John") &&
+                        user.getLastName().equals("Doe") &&
+                        user.getIdentificationNumber().equals("12345"))
                 .verifyComplete();
     }
-
-    @Test
-    @DisplayName("Validate the function testPost.")
-    void validateTestPost() {
-
-        mockBackEnd.enqueue(new MockResponse()
-                .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .setResponseCode(HttpStatus.OK.value())
-                .setBody("{\"state\" : \"ok\"}"));
-        var response = restConsumer.testPost();
-
-        StepVerifier.create(response)
-                .expectNextMatches(objectResponse -> objectResponse.getState().equals("ok"))
-                .verifyComplete();
-    }
-     */
 }

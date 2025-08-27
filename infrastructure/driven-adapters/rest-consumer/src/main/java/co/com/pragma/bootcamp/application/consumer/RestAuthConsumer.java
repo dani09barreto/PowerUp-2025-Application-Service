@@ -1,7 +1,6 @@
 package co.com.pragma.bootcamp.application.consumer;
 
 import co.com.pragma.bootcamp.application.consumer.dto.UserRegistrationResponse;
-import co.com.pragma.bootcamp.application.consumer.error.ApiError;
 import co.com.pragma.bootcamp.application.consumer.mapper.UserDtoMapper;
 import co.com.pragma.bootcamp.application.model.user.User;
 import co.com.pragma.bootcamp.application.model.user.gateways.IUserRepository;
