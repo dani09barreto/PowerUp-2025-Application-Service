@@ -5,4 +5,5 @@ import reactor.core.publisher.Mono;
 
 public interface IApplicationStatusRepository {
     Mono<ApplicationStatus> findByName(String name);
+    Mono<ApplicationStatus> findById(Long id);
 }

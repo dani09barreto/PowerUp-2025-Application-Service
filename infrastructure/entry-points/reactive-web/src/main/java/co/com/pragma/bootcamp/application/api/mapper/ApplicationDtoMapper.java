@@ -13,6 +13,7 @@ public class ApplicationDtoMapper {
                 .user(User.builder().identificationNumber(registerApplicationRequest.documentNumber()).build())
                 .loanType(LoanType.builder().id(registerApplicationRequest.loanTypeId()).build())
                 .amount(registerApplicationRequest.amount())
+                .annualRate(registerApplicationRequest.annualRate())
                 .termMonths(registerApplicationRequest.termMonths())
                 .build();
     }
@@ -23,6 +24,7 @@ public class ApplicationDtoMapper {
                 loanApplication.getUser() != null ? loanApplication.getUser().getId() : null,
                 loanApplication.getLoanType() != null ? loanApplication.getLoanType().getId() : null,
                 loanApplication.getApplicationStatus() != null ? loanApplication.getApplicationStatus().getId() : null,
+                loanApplication.getAnnualRate(),
                 loanApplication.getTermMonths(),
                 loanApplication.getAmount()
         );

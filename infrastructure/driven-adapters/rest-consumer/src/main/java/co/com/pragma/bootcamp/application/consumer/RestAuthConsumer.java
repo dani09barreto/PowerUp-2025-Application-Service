@@ -35,4 +35,22 @@ public class RestAuthConsumer implements IUserRepository {
                 .bodyToMono(UserRegistrationResponse.class)
                 .map(UserDtoMapper::toUser);
     }
+
+    @Override
+    public Mono<User> findById(Long id) {
+        return client
+                .get()
+                .uri("/api/v1/usuarios/{id}", id)
+                .retrieve()
+                .onStatus(
+                        HttpStatusCode::isError,
+                        response -> response.bodyToMono(String.class)
+                                .flatMap(errorMessage -> {
+                                    log.error("Error response from auth service: {}", errorMessage);
+                                    return Mono.empty();
+                                })
+                )
+                .bodyToMono(UserRegistrationResponse.class)
+                .map(UserDtoMapper::toUser);
+    }
 }

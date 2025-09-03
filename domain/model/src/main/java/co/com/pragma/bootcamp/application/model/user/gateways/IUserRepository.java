@@ -5,4 +5,5 @@ import reactor.core.publisher.Mono;
 
 public interface IUserRepository {
     Mono<User> findByNumberIdentification(String numberIdentification);
+    Mono<User> findById(Long id);
 }

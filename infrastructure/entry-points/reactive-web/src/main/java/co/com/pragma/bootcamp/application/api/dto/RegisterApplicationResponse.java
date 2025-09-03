@@ -7,6 +7,7 @@ public record RegisterApplicationResponse(
         Long userId,
         Long loanTypeId,
         Long applicationStatusId,
+        BigDecimal annualRate,
         Integer termMonths,
         BigDecimal amount
 ) {

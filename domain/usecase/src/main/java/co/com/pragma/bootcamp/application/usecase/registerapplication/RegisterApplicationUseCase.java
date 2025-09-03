@@ -44,6 +44,7 @@ public class RegisterApplicationUseCase implements IRegisterApplicationUseCase{
                                                                     .amount(loanApplication.getAmount())
                                                                     .termMonths(loanApplication.getTermMonths())
                                                                     .applicationStatus(applicationStatus)
+                                                                    .annualRate(loanApplication.getAnnualRate())
                                                                     .loanType(loanType)
                                                                     .build();
 

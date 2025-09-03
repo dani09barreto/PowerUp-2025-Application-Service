@@ -20,6 +20,7 @@ public class LoanApplication {
     private User user;
     private BigDecimal amount;
     private Integer termMonths;
+    private BigDecimal annualRate;
     private ApplicationStatus applicationStatus;
     private LoanType loanType;
 }
