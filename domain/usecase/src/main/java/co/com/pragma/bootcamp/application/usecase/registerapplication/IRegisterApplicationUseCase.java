@@ -4,6 +4,6 @@ import co.com.pragma.bootcamp.application.model.loanapplication.LoanApplication;
 import reactor.core.publisher.Mono;
 
 public interface IRegisterApplicationUseCase {
-    Mono<LoanApplication> registerApplication(LoanApplication loanApplication);
+    Mono<LoanApplication> registerApplication(LoanApplication loanApplication, Mono<String>  currentUser);
     void validate(LoanApplication loanApplication);
 }

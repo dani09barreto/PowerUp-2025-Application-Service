@@ -15,11 +15,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.security.Principal;
 import java.util.List;
 
 @Log4j2
@@ -52,11 +56,13 @@ public class ApplicationHandler {
                     )
             }
     )
+    @PreAuthorize("hasAnyRole('CLIENT')")
     public Mono<ServerResponse> registerApplication(ServerRequest serverRequest) {
         log.info("Received request to register application");
+
         return serverRequest.bodyToMono(RegisterApplicationRequest.class)
                 .map(ApplicationDtoMapper::toLoanApplication)
-                .flatMap(registerApplicationUseCase::registerApplication)
+                .flatMap(loanApplication -> registerApplicationUseCase.registerApplication(loanApplication, getCurrentUserName()))
                 .map(ApplicationDtoMapper::toRegisterApplicationResponse)
                 .flatMap(savedUser -> ServerResponse.ok().bodyValue(savedUser));
     }
@@ -95,6 +101,7 @@ public class ApplicationHandler {
                     )
             }
     )
+    @PreAuthorize("hasAnyRole('ADVISOR')")
     public Mono<ServerResponse> getApplicationsByFilters(ServerRequest serverRequest){
         log.info("Received request to get applications by filters");
         List<String> status = serverRequest.queryParam("status").map(List::of).orElse(List.of());
@@ -113,5 +120,11 @@ public class ApplicationHandler {
                         .totalPages((int) Math.ceil((double) applications.size() / size))
                         .build())
                 .flatMap(response -> ServerResponse.ok().bodyValue(response));
+    }
+
+    public Mono<String> getCurrentUserName() {
+        return ReactiveSecurityContextHolder.getContext()
+                .map(SecurityContext::getAuthentication)
+                .map(Principal::getName);
     }
 }
