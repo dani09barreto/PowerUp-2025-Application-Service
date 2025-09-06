@@ -2,9 +2,9 @@ server:
   port: 8081
 spring:
   r2dbc:
-    url: "r2dbc:postgresql://localhost:5432/autenticacion_db"
-    username: "postgres"
-    password: "admin123"
+    url: ${SPRING_R2DBC_URL}
+    username: ${SPRING_R2DBC_USERNAME}
+    password: ${SPRING_R2DBC_PASSWORD}
   application:
     name: "ApplicationService"
   devtools:
@@ -18,7 +18,7 @@ spring:
 adapter:
   restauthconsumer:
     timeout: 5000
-    url: "http://localhost:8080"
+    url: ${AUTH_SERVICE_URL}
 management:
   health:
     circuitbreakers:
