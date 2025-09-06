@@ -32,6 +32,9 @@ public class LoanApplicationEntity {
     @Column("loan_type_id")
     private Long loanTypeId;
 
+    @Column("annual_rate")
+    private BigDecimal annualRate;
+
     @Column("application_status_id")
     private Long applicationStatusId;
 
@@ -42,6 +45,7 @@ public class LoanApplicationEntity {
                 .amount(loanApplication.getAmount())
                 .termMonths(loanApplication.getTermMonths())
                 .loanTypeId(loanApplication.getLoanType() != null ? loanApplication.getLoanType().getId() : null)
+                .annualRate(loanApplication.getAnnualRate())
                 .applicationStatusId(loanApplication.getApplicationStatus() != null ? loanApplication.getApplicationStatus().getId() : null)
                 .build();
     }
@@ -53,6 +57,7 @@ public class LoanApplicationEntity {
                 .amount(this.amount)
                 .termMonths(this.termMonths)
                 .loanType(this.loanTypeId != null ? LoanType.builder().id(this.loanTypeId).build() : null)
+                .annualRate(this.annualRate)
                 .applicationStatus(this.applicationStatusId != null ? ApplicationStatus.builder().id(this.applicationStatusId).build() : null)
                 .build();
     }

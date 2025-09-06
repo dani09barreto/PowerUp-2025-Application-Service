@@ -25,7 +25,7 @@ public class RegisterApplicationUseCase implements IRegisterApplicationUseCase{
     private final IReactiveTxPort reactiveTxPort;
 
     @Override
-    public Mono<LoanApplication> registerApplication(LoanApplication loanApplication) {
+    public Mono<LoanApplication> registerApplication(LoanApplication loanApplication, Mono<String> currentUser) {
         validate(loanApplication);
 
         return reactiveTxPort.executeInTransaction(
@@ -37,18 +37,26 @@ public class RegisterApplicationUseCase implements IRegisterApplicationUseCase{
                                         .flatMap(applicationStatus ->
                                                 userRepository.findByNumberIdentification(loanApplication.getUser().getIdentificationNumber())
                                                         .switchIfEmpty(Mono.error(new UserNotFoundException("User not found with identification number: " + loanApplication.getUser().getIdentificationNumber())))
-                                                        .flatMap(user -> {
+                                                        .flatMap(user ->
+                                                                currentUser.flatMap(current -> {
+                                                                    if (!current.equals(user.getEmail())) {
+                                                                        return Mono.error(new InvalidUserDataException(
+                                                                                "El usuario autenticado no coincide con el usuario de la solicitud"
+                                                                        ));
+                                                                    }
 
-                                                            LoanApplication loanApplicationToSave = LoanApplication.builder()
-                                                                    .user(user)
-                                                                    .amount(loanApplication.getAmount())
-                                                                    .termMonths(loanApplication.getTermMonths())
-                                                                    .applicationStatus(applicationStatus)
-                                                                    .loanType(loanType)
-                                                                    .build();
+                                                                    LoanApplication loanApplicationToSave = LoanApplication.builder()
+                                                                            .user(user)
+                                                                            .amount(loanApplication.getAmount())
+                                                                            .termMonths(loanApplication.getTermMonths())
+                                                                            .applicationStatus(applicationStatus)
+                                                                            .annualRate(loanApplication.getAnnualRate())
+                                                                            .loanType(loanType)
+                                                                            .build();
 
-                                                            return loanApplicationRepository.save(loanApplicationToSave);
-                                                        })
+                                                                    return loanApplicationRepository.save(loanApplicationToSave);
+                                                                })
+                                                        )
                                         )
                         )
         );

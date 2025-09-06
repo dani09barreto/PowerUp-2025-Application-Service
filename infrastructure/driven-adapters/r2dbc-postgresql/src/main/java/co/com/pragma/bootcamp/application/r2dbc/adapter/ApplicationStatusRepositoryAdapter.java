@@ -20,4 +20,11 @@ public class ApplicationStatusRepositoryAdapter implements IApplicationStatusRep
                 .map(ApplicationStatusEntity::toDomain)
                 .switchIfEmpty(Mono.empty());
     }
+
+    @Override
+    public Mono<ApplicationStatus> findById(Long id) {
+        return repository.findById(id)
+                .map(ApplicationStatusEntity::toDomain)
+                .switchIfEmpty(Mono.empty());
+    }
 }

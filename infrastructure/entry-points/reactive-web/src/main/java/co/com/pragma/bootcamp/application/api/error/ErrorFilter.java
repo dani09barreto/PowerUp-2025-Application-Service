@@ -1,10 +1,12 @@
 package co.com.pragma.bootcamp.application.api.error;
 
+import co.com.pragma.bootcamp.application.usecase.registerapplication.error.InvalidUserDataException;
 import co.com.pragma.bootcamp.application.usecase.registerapplication.error.LoanTypeNotFoundException;
 import co.com.pragma.bootcamp.application.usecase.registerapplication.error.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.HandlerFilterFunction;
 import org.springframework.web.reactive.function.server.HandlerFunction;
@@ -12,6 +14,7 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 
 @Slf4j
@@ -25,6 +28,10 @@ public class ErrorFilter implements HandlerFilterFunction<ServerResponse, Server
                         ex -> buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), request))
                 .onErrorResume(LoanTypeNotFoundException.class,
                         ex -> buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), request))
+                .onErrorResume(InvalidUserDataException.class,
+                        ex -> buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request))
+                .onErrorResume(AuthorizationDeniedException.class,
+                        ex -> buildErrorResponse(HttpStatus.FORBIDDEN, ex.getMessage(), request))
                 .onErrorResume(Exception.class,
                         ex -> buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), request));
 
