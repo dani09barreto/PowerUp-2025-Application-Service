@@ -6,6 +6,7 @@ import co.com.pragma.bootcamp.application.usecase.registerapplication.error.User
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.HandlerFilterFunction;
 import org.springframework.web.reactive.function.server.HandlerFunction;
@@ -29,7 +30,7 @@ public class ErrorFilter implements HandlerFilterFunction<ServerResponse, Server
                         ex -> buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), request))
                 .onErrorResume(InvalidUserDataException.class,
                         ex -> buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request))
-                .onErrorResume(AccessDeniedException.class,
+                .onErrorResume(AuthorizationDeniedException.class,
                         ex -> buildErrorResponse(HttpStatus.FORBIDDEN, ex.getMessage(), request))
                 .onErrorResume(Exception.class,
                         ex -> buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), request));
