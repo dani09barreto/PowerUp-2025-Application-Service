@@ -2,9 +2,9 @@ server:
   port: 8081
 spring:
   r2dbc:
-    url: ${SPRING_R2DBC_URL}
-    username: ${SPRING_R2DBC_USERNAME}
-    password: ${SPRING_R2DBC_PASSWORD}
+    url: "${SPRING_R2DBC_URL}"
+    username: "${SPRING_R2DBC_USERNAME}"
+    password: "${SPRING_R2DBC_PASSWORD}"
   application:
     name: "ApplicationService"
   devtools:
@@ -18,7 +18,10 @@ spring:
 adapter:
   restauthconsumer:
     timeout: 5000
-    url: ${AUTH_SERVICE_URL}
+    url: "${AUTH_SERVICE_URL}"
+  sqs:
+    region: "us-east-2"
+    queueUrl: https://sqs.us-east-2.amazonaws.com/315922615470/CreditRequestStatusQueue
 management:
   health:
     circuitbreakers:
@@ -54,7 +57,6 @@ resilience4j:
         waitDurationInOpenState: "10s"
 cors:
   allowed-origins: "http://localhost:4200,http://localhost:8080"
-
 jwt:
-  secret: 3DkU2McWzyrA1P7gL9QnTw5XnYvR8jB2dK7wGfS9h8cT4nM1pXqZrL0vWmYjHsQe
+  secret: "3DkU2McWzyrA1P7gL9QnTw5XnYvR8jB2dK7wGfS9h8cT4nM1pXqZrL0vWmYjHsQe"
   expiration: 3600

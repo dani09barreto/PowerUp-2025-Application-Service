@@ -1,7 +1,7 @@
 package co.com.pragma.bootcamp.application.api.error;
 
-import co.com.pragma.bootcamp.application.usecase.registerapplication.error.LoanTypeNotFoundException;
-import co.com.pragma.bootcamp.application.usecase.registerapplication.error.UserNotFoundException;
+import co.com.pragma.bootcamp.application.usecase.error.LoanTypeNotFoundException;
+import co.com.pragma.bootcamp.application.usecase.error.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

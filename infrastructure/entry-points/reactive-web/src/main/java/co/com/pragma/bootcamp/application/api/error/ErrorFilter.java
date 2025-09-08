@@ -1,8 +1,8 @@
 package co.com.pragma.bootcamp.application.api.error;
 
-import co.com.pragma.bootcamp.application.usecase.registerapplication.error.InvalidUserDataException;
-import co.com.pragma.bootcamp.application.usecase.registerapplication.error.LoanTypeNotFoundException;
-import co.com.pragma.bootcamp.application.usecase.registerapplication.error.UserNotFoundException;
+import co.com.pragma.bootcamp.application.usecase.error.InvalidUserDataException;
+import co.com.pragma.bootcamp.application.usecase.error.LoanTypeNotFoundException;
+import co.com.pragma.bootcamp.application.usecase.error.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,7 +14,6 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 
 @Slf4j

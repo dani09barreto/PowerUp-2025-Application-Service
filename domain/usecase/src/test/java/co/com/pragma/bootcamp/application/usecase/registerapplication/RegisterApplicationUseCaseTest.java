@@ -10,13 +10,12 @@ import co.com.pragma.bootcamp.application.model.loantype.gateways.ILoanTypeRepos
 import co.com.pragma.bootcamp.application.model.transaccion.IReactiveTxPort;
 import co.com.pragma.bootcamp.application.model.user.User;
 import co.com.pragma.bootcamp.application.model.user.gateways.IUserRepository;
-import co.com.pragma.bootcamp.application.usecase.registerapplication.error.InvalidUserDataException;
-import co.com.pragma.bootcamp.application.usecase.registerapplication.error.LoanTypeNotFoundException;
-import co.com.pragma.bootcamp.application.usecase.registerapplication.error.UserNotFoundException;
+import co.com.pragma.bootcamp.application.usecase.error.InvalidUserDataException;
+import co.com.pragma.bootcamp.application.usecase.error.LoanTypeNotFoundException;
+import co.com.pragma.bootcamp.application.usecase.error.UserNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 

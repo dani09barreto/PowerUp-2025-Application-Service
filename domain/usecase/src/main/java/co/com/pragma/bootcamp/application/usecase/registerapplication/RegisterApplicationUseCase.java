@@ -7,9 +7,9 @@ import co.com.pragma.bootcamp.application.model.loanapplication.gateways.ILoanAp
 import co.com.pragma.bootcamp.application.model.loantype.gateways.ILoanTypeRepository;
 import co.com.pragma.bootcamp.application.model.transaccion.IReactiveTxPort;
 import co.com.pragma.bootcamp.application.model.user.gateways.IUserRepository;
-import co.com.pragma.bootcamp.application.usecase.registerapplication.error.InvalidUserDataException;
-import co.com.pragma.bootcamp.application.usecase.registerapplication.error.LoanTypeNotFoundException;
-import co.com.pragma.bootcamp.application.usecase.registerapplication.error.UserNotFoundException;
+import co.com.pragma.bootcamp.application.usecase.error.InvalidUserDataException;
+import co.com.pragma.bootcamp.application.usecase.error.LoanTypeNotFoundException;
+import co.com.pragma.bootcamp.application.usecase.error.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 

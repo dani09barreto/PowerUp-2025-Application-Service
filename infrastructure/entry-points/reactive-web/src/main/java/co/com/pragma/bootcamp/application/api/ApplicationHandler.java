@@ -3,11 +3,13 @@ package co.com.pragma.bootcamp.application.api;
 import co.com.pragma.bootcamp.application.api.dto.PageableResponse;
 import co.com.pragma.bootcamp.application.api.dto.RegisterApplicationRequest;
 import co.com.pragma.bootcamp.application.api.dto.RegisterApplicationResponse;
+import co.com.pragma.bootcamp.application.api.dto.UpdateApplicationRequest;
 import co.com.pragma.bootcamp.application.api.error.ApiError;
 import co.com.pragma.bootcamp.application.api.mapper.ApplicationDtoMapper;
 import co.com.pragma.bootcamp.application.usecase.listapplications.IListApplicationsUseCase;
 import co.com.pragma.bootcamp.application.usecase.listapplications.dto.ApplicationListDto;
 import co.com.pragma.bootcamp.application.usecase.registerapplication.IRegisterApplicationUseCase;
+import co.com.pragma.bootcamp.application.usecase.updateapplication.IUpdateApplicationUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,6 +35,7 @@ public class ApplicationHandler {
 
     private final IRegisterApplicationUseCase registerApplicationUseCase;
     private final IListApplicationsUseCase listApplicationsUseCase;
+    private final IUpdateApplicationUseCase updateApplicationUseCase;
 
     @Operation(
             summary = "Registrar una nueva solicitud de préstamo",
@@ -126,5 +129,35 @@ public class ApplicationHandler {
         return ReactiveSecurityContextHolder.getContext()
                 .map(SecurityContext::getAuthentication)
                 .map(Principal::getName);
+    }
+
+    @Operation(
+            summary = "Actualizar una solicitud de préstamo",
+            description = "Este endpoint permite actualizar una solicitud de préstamo en el sistema.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    required = true,
+                    description = "Solicitud de préstamo a actualizar",
+                    content = @Content(schema = @Schema(implementation = UpdateApplicationRequest.class))
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Solicitud de préstamo actualizada exitosamente",
+                            content = @Content(schema = @Schema(implementation = RegisterApplicationResponse.class))
+                    ),
+                    @ApiResponse(responseCode = "400", description = "Error de validación en los datos",
+                            content = @Content(schema = @Schema(implementation = ApiError.class))
+                    ),
+                    @ApiResponse(responseCode = "409", description = "Correo ya registrado",
+                            content = @Content(schema = @Schema(implementation = ApiError.class))
+                    )
+            }
+    )
+    @PreAuthorize("hasAnyRole('ADVISOR')")
+    public Mono<ServerResponse> updateApplication(ServerRequest serverRequest){
+        return serverRequest.bodyToMono(UpdateApplicationRequest.class)
+                .flatMap(updateApplicationRequest -> updateApplicationUseCase.updateApplication(updateApplicationRequest.applicationId(), updateApplicationRequest.status()))
+                .map(ApplicationDtoMapper::toRegisterApplicationResponse)
+                .flatMap(updatedApplication -> ServerResponse.ok().bodyValue(updatedApplication));
     }
 }

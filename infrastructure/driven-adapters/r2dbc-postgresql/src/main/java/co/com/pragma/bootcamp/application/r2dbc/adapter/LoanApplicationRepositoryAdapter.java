@@ -42,4 +42,18 @@ public class LoanApplicationRepositoryAdapter implements ILoanApplicationReposit
                 .take(size)
                 .map(LoanApplicationEntity::toDomain);
     }
+
+    @Override
+    public Mono<LoanApplication> findById(Long id) {
+        log.info("Finding LoanApplication by ID: {}", id);
+        return repository.findById(id)
+                .map(LoanApplicationEntity::toDomain);
+    }
+
+    @Override
+    public Mono<LoanApplication> update(LoanApplication loanApplication) {
+        log.info("Updating LoanApplication: {}", loanApplication);
+        return repository.save(LoanApplicationEntity.fromDomain(loanApplication))
+                .map(LoanApplicationEntity::toDomain);
+    }
 }

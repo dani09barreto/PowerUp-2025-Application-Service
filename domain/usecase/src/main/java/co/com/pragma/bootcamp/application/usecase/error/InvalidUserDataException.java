@@ -1,4 +1,4 @@
-package co.com.pragma.bootcamp.application.usecase.registerapplication.error;
+package co.com.pragma.bootcamp.application.usecase.error;
 
 public class InvalidUserDataException extends RuntimeException {
 

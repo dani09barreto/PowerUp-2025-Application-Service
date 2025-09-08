@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
-import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
+import static org.springframework.web.reactive.function.server.RequestPredicates.*;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Configuration
@@ -29,11 +28,18 @@ public class ApplicationRouterRest {
                     beanClass = ApplicationHandler.class,
                     method = RequestMethod.GET,
                     beanMethod = "getApplicationsByFilters"
+            ),
+            @RouterOperation(
+                    path = "/api/v1/solicitud",
+                    beanClass = ApplicationHandler.class,
+                    method = RequestMethod.PUT,
+                    beanMethod = "updateApplication"
             )
     })
     public RouterFunction<ServerResponse> routerFunction(ApplicationHandler handler, ErrorFilter errorFilter) {
         return route(POST("/api/v1/solicitud"), handler::registerApplication)
                 .andRoute(GET("/api/v1/solicitud") , handler::getApplicationsByFilters)
+                .andRoute(PUT("/api/v1/solicitud"), handler::updateApplication)
                 .filter(errorFilter);
     }
 }
