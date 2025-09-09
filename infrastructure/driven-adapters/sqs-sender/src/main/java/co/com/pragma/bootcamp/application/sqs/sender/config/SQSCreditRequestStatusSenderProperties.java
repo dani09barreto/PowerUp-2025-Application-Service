@@ -5,5 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "adapter.sqs")
 public record SQSCreditRequestStatusSenderProperties(
      String region,
-     String queueUrl){
+     String queueUrl,
+     String accessKey,
+     String secretAccessKey){
 }

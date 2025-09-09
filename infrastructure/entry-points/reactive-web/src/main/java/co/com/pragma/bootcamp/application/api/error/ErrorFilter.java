@@ -1,8 +1,6 @@
 package co.com.pragma.bootcamp.application.api.error;
 
-import co.com.pragma.bootcamp.application.usecase.error.InvalidUserDataException;
-import co.com.pragma.bootcamp.application.usecase.error.LoanTypeNotFoundException;
-import co.com.pragma.bootcamp.application.usecase.error.UserNotFoundException;
+import co.com.pragma.bootcamp.application.usecase.error.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,6 +29,10 @@ public class ErrorFilter implements HandlerFilterFunction<ServerResponse, Server
                         ex -> buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request))
                 .onErrorResume(AuthorizationDeniedException.class,
                         ex -> buildErrorResponse(HttpStatus.FORBIDDEN, ex.getMessage(), request))
+                .onErrorResume(ApplicationStatusNotFoundException.class,
+                        ex -> buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), request))
+                .onErrorResume(LoanApplicationNotFound.class,
+                        ex -> buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), request))
                 .onErrorResume(Exception.class,
                         ex -> buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), request));
 
