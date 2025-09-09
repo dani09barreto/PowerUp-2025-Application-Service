@@ -20,8 +20,8 @@ adapter:
     timeout: 5000
     url: "${AUTH_SERVICE_URL}"
   sqs:
-    region: "us-east-2"
-    queueUrl: https://sqs.us-east-2.amazonaws.com/315922615470/CreditRequestStatusQueue
+    region: ${AWS_SQS_REGION}
+    queueUrl: ${AWS_SQS_URL}
 management:
   health:
     circuitbreakers:
