@@ -1,6 +1,7 @@
 package co.com.pragma.bootcamp.application.consumer;
 
 
+import co.com.pragma.bootcamp.application.consumer.authconsumer.RestAuthConsumer;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;

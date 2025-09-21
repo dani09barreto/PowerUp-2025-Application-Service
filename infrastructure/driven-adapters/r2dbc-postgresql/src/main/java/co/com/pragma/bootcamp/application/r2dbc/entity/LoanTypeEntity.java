@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
@@ -17,12 +18,15 @@ public class LoanTypeEntity {
     @Id
     private Long id;
     private String name;
+    @Column("aut_validation")
+    private Boolean autValidation;
 
 
     public static LoanTypeEntity fromDomain(LoanType loanType) {
         return LoanTypeEntity.builder()
                 .id(loanType.getId())
                 .name(loanType.getName())
+                .autValidation(loanType.getAutoValidation())
                 .build();
     }
 
@@ -30,6 +34,7 @@ public class LoanTypeEntity {
         return LoanType.builder()
                 .id(this.id)
                 .name(this.name)
+                .autoValidation(this.autValidation)
                 .build();
     }
 }

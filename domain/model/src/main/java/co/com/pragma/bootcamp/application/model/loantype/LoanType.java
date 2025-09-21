@@ -13,4 +13,5 @@ import lombok.Setter;
 public class LoanType {
     private Long id;
     private String name;
+    private Boolean autoValidation;
 }

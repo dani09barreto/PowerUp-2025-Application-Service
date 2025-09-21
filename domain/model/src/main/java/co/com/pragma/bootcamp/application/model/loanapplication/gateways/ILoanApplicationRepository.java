@@ -11,4 +11,5 @@ public interface ILoanApplicationRepository {
     Flux<LoanApplication> findLoanApplicationsByApplicationStatusNameIn(List<String> applicationStatusNames, Integer page, Integer size);
     Mono<LoanApplication> findById(Long id);
     Mono<LoanApplication> update(LoanApplication loanApplication);
+    Flux<LoanApplication> findAllByApplicationStatusId(Long applicationTypeId);
 }

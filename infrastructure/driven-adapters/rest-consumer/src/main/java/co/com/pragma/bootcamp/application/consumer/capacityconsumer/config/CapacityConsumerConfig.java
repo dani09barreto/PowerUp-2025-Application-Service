@@ -1,4 +1,4 @@
-package co.com.pragma.bootcamp.application.consumer.config;
+package co.com.pragma.bootcamp.application.consumer.capacityconsumer.config;
 
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
@@ -15,20 +15,20 @@ import static io.netty.channel.ChannelOption.CONNECT_TIMEOUT_MILLIS;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 @Configuration
-public class RestConsumerConfig {
+public class CapacityConsumerConfig {
 
     private final String url;
 
     private final int timeout;
 
-    public RestConsumerConfig(@Value("${adapter.restauthconsumer.url}") String url,
-                              @Value("${adapter.restauthconsumer.timeout}") int timeout) {
+    public CapacityConsumerConfig(@Value("${adapter.capacityconsumer.url}") String url,
+                                  @Value("${adapter.capacityconsumer.timeout}") int timeout) {
         this.url = url;
         this.timeout = timeout;
     }
 
-    @Bean
-    public WebClient getWebClient(WebClient.Builder builder) {
+    @Bean("capacityWebClient")
+    public WebClient capacityWebClient(WebClient.Builder builder) {
         return builder
             .baseUrl(url)
             .defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json")

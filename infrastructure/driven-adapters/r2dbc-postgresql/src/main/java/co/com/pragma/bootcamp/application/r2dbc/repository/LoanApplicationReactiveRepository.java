@@ -12,4 +12,7 @@ public interface LoanApplicationReactiveRepository extends ReactiveCrudRepositor
 
     @Query("select * from loan_applications la inner join application_status aps on aps.id = la.application_status_id where aps.name in (:applicationStatusNames)")
     Flux<LoanApplicationEntity> findByApplicationStatusName(List<String> applicationStatusNames);
+
+    @Query("select * from loan_applications la where la.application_status_id = :applicationStatusId")
+    Flux<LoanApplicationEntity> findAllByApplicationStatusId(Long applicationStatusId);
 }

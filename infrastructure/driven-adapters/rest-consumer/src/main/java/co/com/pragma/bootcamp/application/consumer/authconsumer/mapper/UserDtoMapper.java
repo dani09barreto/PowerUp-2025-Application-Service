@@ -1,7 +1,7 @@
-package co.com.pragma.bootcamp.application.consumer.mapper;
+package co.com.pragma.bootcamp.application.consumer.authconsumer.mapper;
 
 
-import co.com.pragma.bootcamp.application.consumer.dto.UserRegistrationResponse;
+import co.com.pragma.bootcamp.application.consumer.authconsumer.dto.UserRegistrationResponse;
 import co.com.pragma.bootcamp.application.model.user.User;
 
 public class UserDtoMapper {

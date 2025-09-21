@@ -1,11 +1,12 @@
-package co.com.pragma.bootcamp.application.consumer;
+package co.com.pragma.bootcamp.application.consumer.authconsumer;
 
-import co.com.pragma.bootcamp.application.consumer.dto.UserRegistrationResponse;
-import co.com.pragma.bootcamp.application.consumer.mapper.UserDtoMapper;
+import co.com.pragma.bootcamp.application.consumer.authconsumer.dto.UserRegistrationResponse;
+import co.com.pragma.bootcamp.application.consumer.authconsumer.mapper.UserDtoMapper;
 import co.com.pragma.bootcamp.application.model.user.User;
 import co.com.pragma.bootcamp.application.model.user.gateways.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -13,10 +14,13 @@ import reactor.core.publisher.Mono;
 
 @Log4j2
 @Service
-@RequiredArgsConstructor
 public class RestAuthConsumer implements IUserRepository {
 
     private final WebClient client;
+
+    public RestAuthConsumer(@Qualifier("authWebClient") WebClient client) {
+        this.client = client;
+    }
 
     @Override
     public Mono<User> findByNumberIdentification(String numberIdentification) {

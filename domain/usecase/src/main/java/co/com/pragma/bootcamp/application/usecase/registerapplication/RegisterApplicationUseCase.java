@@ -3,6 +3,7 @@ package co.com.pragma.bootcamp.application.usecase.registerapplication;
 import co.com.pragma.bootcamp.application.model.applicationstatus.enums.ApplicationStatusEnum;
 import co.com.pragma.bootcamp.application.model.applicationstatus.gateways.IApplicationStatusRepository;
 import co.com.pragma.bootcamp.application.model.loanapplication.LoanApplication;
+import co.com.pragma.bootcamp.application.model.loanapplication.gateways.ILoanApplicationCapacityRepository;
 import co.com.pragma.bootcamp.application.model.loanapplication.gateways.ILoanApplicationRepository;
 import co.com.pragma.bootcamp.application.model.loantype.gateways.ILoanTypeRepository;
 import co.com.pragma.bootcamp.application.model.transaccion.IReactiveTxPort;
@@ -23,6 +24,7 @@ public class RegisterApplicationUseCase implements IRegisterApplicationUseCase{
     private final ILoanApplicationRepository loanApplicationRepository;
     private final IUserRepository userRepository;
     private final IReactiveTxPort reactiveTxPort;
+    private final ILoanApplicationCapacityRepository loanApplicationCapacityRepository;
 
     @Override
     public Mono<LoanApplication> registerApplication(LoanApplication loanApplication, Mono<String> currentUser) {
@@ -59,7 +61,43 @@ public class RegisterApplicationUseCase implements IRegisterApplicationUseCase{
                                                         )
                                         )
                         )
-        );
+        )
+                .doOnSuccess(loanApplicationSaved -> {
+
+                    loanTypeRepository.findById(loanApplicationSaved.getLoanType().getId())
+                            .flatMap(loanType -> {
+                                if (Boolean.TRUE.equals(loanType.getAutoValidation())) {
+                                    return userRepository.findById(loanApplicationSaved.getUser().getId())
+                                            .flatMap(user -> {
+                                                loanApplicationSaved.setUser(user);
+                                                return applicationStatusRepository.findByName(ApplicationStatusEnum.APPROVED.name());
+                                            }
+                                            )
+                                            .flatMap(applicationStatus ->
+                                                    loanApplicationRepository.findAllByApplicationStatusId(applicationStatus.getId())
+                                                            .collectList()
+                                                            .flatMap(approvedApplications ->
+                                                                    loanApplicationCapacityRepository.sendAutoLoanApplicationCapacity(loanApplicationSaved, approvedApplications)
+                                                                            .flatMap(responseStatusName ->
+                                                                                    applicationStatusRepository.findByName(responseStatusName)
+                                                                                            .flatMap(newStatus -> {
+                                                                                                loanApplicationSaved.setApplicationStatus(newStatus);
+                                                                                                return loanApplicationRepository.save(loanApplicationSaved);
+                                                                                            })
+                                                                            )
+                                                            )
+                                            );
+                                } else {
+                                    // Si autoValidation es false, no hace nada y retorna vacío
+                                    return Mono.empty();
+                                }
+                            })
+                            .subscribe(
+                                    updated -> System.out.println("LoanApplication actualizado con status externo"),
+                                    err -> System.err.println("Error en proceso asincrónico: " + err.getMessage())
+                            );
+                });
+
     }
 
     @Override

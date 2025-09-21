@@ -1,4 +1,4 @@
-package co.com.pragma.bootcamp.application.consumer.dto;
+package co.com.pragma.bootcamp.application.consumer.authconsumer.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

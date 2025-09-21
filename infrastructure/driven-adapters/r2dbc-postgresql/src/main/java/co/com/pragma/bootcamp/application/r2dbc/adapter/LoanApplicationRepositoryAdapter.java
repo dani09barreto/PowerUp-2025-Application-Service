@@ -56,4 +56,11 @@ public class LoanApplicationRepositoryAdapter implements ILoanApplicationReposit
         return repository.save(LoanApplicationEntity.fromDomain(loanApplication))
                 .map(LoanApplicationEntity::toDomain);
     }
+
+    @Override
+    public Flux<LoanApplication> findAllByApplicationStatusId(Long applicationStatusId) {
+        log.info("Finding all LoanApplications with ApplicationStatusId: {}", applicationStatusId);
+        return repository.findAllByApplicationStatusId(applicationStatusId)
+                .map(LoanApplicationEntity::toDomain);
+    }
 }

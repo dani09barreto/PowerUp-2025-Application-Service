@@ -18,7 +18,10 @@ spring:
 adapter:
   restauthconsumer:
     timeout: 5000
-    url: "${AUTH_SERVICE_URL}"
+    url: ${AUTH_SERVICE_URL}
+  capacityconsumer:
+    timeout: 5000
+    url: ${CAPACITY_SERVICE_URL}
   sqs:
     region: ${AWS_SQS_REGION}
     queueUrl: ${AWS_SQS_URL}
